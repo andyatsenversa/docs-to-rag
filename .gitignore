@@ -1,3 +1,7 @@
+# project specific exclusions
+original_docs/
+rag_env/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
