@@ -38,7 +38,7 @@ def install_dependencies(venv_dir):
     subprocess.check_call([pip, 'install'] + requirements)
 
 def create_config_file():
-    if not os.path.exists('config.yaml'):
+    if not os.path.exists('config/config.yaml'):
         config = {
             'folder_path': '''..original_documents''',
             'chunk_size': 256,
@@ -50,17 +50,11 @@ def create_config_file():
             'model_cache_dir': '''model_dir'''
 
         }
-        with open('config.yaml', 'w') as f:
+        with open('config/config.yaml', 'w') as f:
             yaml.dump(config, f)
         print("Created config.yaml with default values. Please update it with your settings.")
     else:
         print("config.yaml already exists. Please update it if necessary.")
-
-def check_files():
-    required_files = ['rag_preparation.py', 'chunking.py', 'test_rag_preparation.py']
-    for file in required_files:
-        if not os.path.exists(file):
-            print(f"Warning: {file} is missing. Please ensure all required files are present.")
 
 ## WONT RUN ON SEN MACHINE _ HUGGINFACE BLOCKED
 def download_model(model_name, model_cache_dir):
@@ -77,7 +71,7 @@ def main():
     check_files()
 
     # Download model
-    config = yaml.safe_load(open('config.yaml'))
+    config = yaml.safe_load(open('config/config.yaml'))
     # create directory if it doens exist:
     os.makedirs(config['model_cache_dir'], exist_ok=True)
     download_model(config['model_name'], config['model_cache_dir'])

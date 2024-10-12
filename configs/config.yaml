@@ -1,0 +1,8 @@
+chunk_size: 256
+db_path: 'data/processed/rag_database.sqlite'
+folder_path: 'data/raw/docs'
+model_name: 'all-MiniLM-L6-v2'
+output_index: 'data/embeddings/rag_index.faiss'
+overlap: 50
+model_cache_dir: 'models/model_cache'
+
