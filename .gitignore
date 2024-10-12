@@ -1,6 +1,7 @@
 # project specific exclusions
 original_docs/
 rag_env/
+model_dir/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

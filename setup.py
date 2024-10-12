@@ -13,6 +13,7 @@ def create_virtual_environment():
 
     print(f"Creating virtual environment in {venv_dir}...")
     venv.create(venv_dir, with_pip=True)
+    os.system('/bin/bash --rcfile '+venv_dir+'/bin/activate')
     return venv_dir
 
 def install_dependencies(venv_dir):
@@ -35,12 +36,6 @@ def install_dependencies(venv_dir):
     ]
     print("Installing dependencies...")
     subprocess.check_call([pip, 'install'] + requirements)
-    print("/nDownloading nltk files...")
-    import nltk
-    nltk.download('punkt', download_dir = venv_dir+'/nltk_data')
-    nltk.download('punkt_tab', download_dir = venv_dir+'/nltk_data')
-    nltk.download('wordnet', download_dir = venv_dir+'/nltk_data')
-    nltk.download('omw-1.4', download_dir = venv_dir+'/nltk_data')
 
 def create_config_file():
     if not os.path.exists('config.yaml'):
@@ -75,20 +70,30 @@ def download_model(model_name, model_cache_dir):
     print("Model downloaded successfully.")
 
 def main():
+    import os
     venv_dir = create_virtual_environment()
     install_dependencies(venv_dir)
     create_config_file()
     check_files()
-    
+
     # Download model
     config = yaml.safe_load(open('config.yaml'))
+    # create directory if it doens exist:
+    os.makedirs(config['model_cache_dir'], exist_ok=True)
     download_model(config['model_name'], config['model_cache_dir'])
+
+    print("/nDownloading nltk files...")
+    import nltk
+    nltk.download('punkt', download_dir = venv_dir+'/nltk_data')
+    nltk.download('punkt_tab', download_dir = venv_dir+'/nltk_data')
+    nltk.download('wordnet', download_dir = venv_dir+'/nltk_data')
+    nltk.download('omw-1.4', download_dir = venv_dir+'/nltk_data')
 
     print("\nSetup complete!")
     print("To activate the virtual environment:")
     if os.name != 'nt':
         print(f"source {venv_dir}/bin/activate.bat")
-    else:
+    else: 
         print(f"{venv_dir}\\Scripts\\activate")
     
     print("\nThen run the tool with:")
